@@ -5,6 +5,8 @@ _These instructions were originally compiled by Eric Anderson._
 
 
 - Logging into Alpine
+
+Go to https://ondemand-rmacc.rc.colorado.edu/ or:
 ```sh
 ssh CSUeid@colostate.edu@login11.rc.colorado.edu
 
