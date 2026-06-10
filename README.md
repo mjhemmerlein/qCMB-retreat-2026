@@ -1,4 +1,4 @@
-# 2026 qCMB Retreat
+# 2026 qCMB Retreat --- Hacking In
 
 ## Connecting GitHub and Alpine
 _These instructions were originally compiled by Eric Anderson._
