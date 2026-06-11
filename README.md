@@ -35,7 +35,18 @@ Raw .tif Images
       ▼
   Percent Deposition per brain region boxplot + Heatmap
 ```
+---
 
+## Directory Structure
+
+```
+qCMB-retreat_2026/
+├── ilastik_output/          # Ilastik segmentation mask outputs
+├── Plot_output/          # plots from R script visualizations
+├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
+├── prion_pipeline_presentation.pptx  # qCMB retreat presentation :) 
+└── README.md
+```
 ---
 
 ## File Naming Convention
@@ -48,10 +59,10 @@ Input images must follow this underscore-delimited naming scheme:
 
 | Field | Description | Example |
 |---|---|---|
-| `group` | Experimental group / genotype | `WT`, `KO` |
-| `treatment` | Treatment condition | `ctrl`, `infected` |
-| `tissue` | Brain region | `cortex`, `hippocampus` |
-| `magnification` | Objective used | `10x`, `20x` |
+| `group` | Experimental group / genotype | `WT`, `GtDeer`, `GtElk` |
+| `treatment` | Treatment condition | `control`, `treatment` |
+| `tissue` | Brain region | `cerebellum`, `midbrain`, `hippocampus`, `septum` |
+| `magnification` | Objective used | `4x` |
 | `sample_id` | Unique sample identifier | `M01` |
 | `method` | Downstream method tag | `ilastik` |
 
@@ -118,28 +129,13 @@ Two R scripts handle metadata parsing and mask analysis.
 
 ---
 
-## Directory Structure
-
-```
-qCMB-retreat_2026/
-├── ilastik_output/          # Ilastik segmentation mask outputs
-├── Plot_output/          # plots from R script visualizations
-├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
-├── prion_pipeline_presentation.pptx  # qCMB retreat presentation :) 
-└── README.md
-```
-
----
-
 ## Dependencies
 
 ### R Packages
 ```r
-install.packages(c("tidyverse", "stringr", "purrr"))
+install.packages(c("tidyverse", "stringr", "purrr", "lmertest", "emmeans"))
 BiocManager::install("EBImage")   # for readImage()
 
-# For image loading:
-install.packages("magick")
 ```
 
 ### External Tools
