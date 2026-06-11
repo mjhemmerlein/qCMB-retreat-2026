@@ -80,13 +80,16 @@ combined_data$deposition_percent = combined_data$deposition_frac * 100
 
 ########################################
 ### Plot the data ######################
+########################################
 
+# Create custom color pallete for the graph
 mycolors = c(
   "GtDeer_treatment" = "orange",
   "GtElk_treatment" = "pink",
   "WT_control" = "lightblue"
 )
 
+# Plot treatment group by percent deposition
 combined_data %>%
   ggplot(aes(x = group_treatment, y = deposition_percent, fill = group_treatment)) +
   geom_boxplot(outlier.shape = NA) +
@@ -100,6 +103,7 @@ combined_data %>%
     y = "Percent Deposition\n(Deposition Area / Brain Area)")
 #ggsave("Plot_output/BrainRegion.png", width = 8, height = 6, dpi = 300)
 
+# Plot brain region by percent deposition
 combined_data %>%
   ggplot(aes(x = tissue, y = deposition_percent, fill = group_treatment)) +
   geom_boxplot(outlier.shape = NA) +
@@ -118,13 +122,18 @@ combined_data %>%
 #write.csv(combined_data, "PercentDeposition_summary.csv")
 
 ########################################
-### Statistics #######################
+### Statistics #########################
+########################################
 
+# Perform linear regression
 Genotype <- lm(
   deposition_percent ~ group_treatment * tissue,
   data = combined_data)
 
+# Perform Analysis of Variance
 anova(Genotype)
+
+# Group comparisons
 
 emmeans(Genotype, pairwise ~ group_treatment | tissue)
 
