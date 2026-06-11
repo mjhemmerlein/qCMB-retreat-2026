@@ -41,7 +41,9 @@ Raw .tif Images
 
 ```
 qCMB-retreat_2026/
-├── Plot_output/          # plots from R script visualizations
+├── Plot_output/             # plots from R script visualizations
+      └── BrainRegion.png    # Boxplot faceted by Brain Region
+      └── Genotype.png       # Boxplot faceted by Genotype  
 ├── ilastik_output/          # Ilastik segmentation mask outputs
 ├── .gitignore               # To ignore the .DS_store and .Rproj files
 ├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
