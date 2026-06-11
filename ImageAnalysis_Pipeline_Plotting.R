@@ -2,11 +2,10 @@
 ### qCMB 2026 Hackathon ################
 ### Team Hacking into the Brainframe ###
 ### 06/10/2026 - 06/11/2026 ############
-########################################
 
 ########################################
 ### Load libraries #####################
-########################################
+
 library(tidyverse)
 library(stringr)
 library(purrr)
@@ -16,7 +15,6 @@ library(emmeans)
 
 ########################################
 ### Import files #######################
-########################################
 
 # Get list of files from the output of ilastik
 files <- list.files(
@@ -60,6 +58,7 @@ extract_mask_features <- function(mask) {
       deposition_frac = deposition / brain)
 }
 
+
 # Function to run
 process_mask_file <- function(filepath) {
   
@@ -79,8 +78,9 @@ combined_data <- map_dfr(files, process_mask_file)
 combined_data$group_treatment = paste0(combined_data$group, "_", combined_data$treatment)
 combined_data$deposition_percent = combined_data$deposition_frac * 100
 
+########################################
+### Plot the data ######################
 
-# Plot the data
 mycolors = c(
   "GtDeer_treatment" = "orange",
   "GtElk_treatment" = "pink",
@@ -98,7 +98,6 @@ combined_data %>%
   labs(
     x = "Treatment Group",
     y = "Percent Deposition\n(Deposition Area / Brain Area)")
-
 #ggsave("Plot_output/BrainRegion.png", width = 8, height = 6, dpi = 300)
 
 combined_data %>%
@@ -113,12 +112,13 @@ combined_data %>%
   labs(
     x = "Brain Region",
     y = "Percent Deposition\n(Deposition Area / Brain Area)")
-
 #ggsave("Plot_output/Genotype.png", width = 8, height = 6, dpi = 300)
 
+# Write out csv
 #write.csv(combined_data, "PercentDeposition_summary.csv")
 
-# Statistics
+########################################
+### Statistics #######################
 
 Genotype <- lm(
   deposition_percent ~ group_treatment * tissue,
@@ -127,14 +127,6 @@ Genotype <- lm(
 anova(Genotype)
 
 emmeans(Genotype, pairwise ~ group_treatment | tissue)
-
-
-# How does genotype impact percent deposition in the brain regions?
-Genotype <- lm(
-  deposition_percent ~ group_treatment * tissue,
-  data = combined_data)
-
-anova(Genotype)
 
 emmeans(Genotype, pairwise ~ tissue | group_treatment)
 
