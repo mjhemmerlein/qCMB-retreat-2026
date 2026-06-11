@@ -61,7 +61,10 @@ Input images must follow this underscore-delimited naming scheme:
 
 ### 1. Ilastik — Pixel Classification
 
-Train a pixel classifier to label three classes in each image:
+Train a pixel classifier to label three classes in each image, using the following methods and classifications:
+  1. Trained using Ground truth metrics from manual scoring
+  2. Batch processed all images using the trained classifier
+  3. Manually assessed quality of masked images
 
 | Label | Value | Description |
 |---|---|---|
@@ -69,7 +72,7 @@ Train a pixel classifier to label three classes in each image:
 | Brain tissue | `2` | Healthy tissue |
 | Deposition | `3` | Prion deposits |
 
-**Output:** Segmentation masks (8-bit grayscale `.tif`) saved to `Masked_Images/`.
+**Output:** Segmentation masks (8-bit grayscale `.tif`) saved to `ilastik_output/`.
 
 ---
 
@@ -77,24 +80,19 @@ Train a pixel classifier to label three classes in each image:
 
 Two R scripts handle metadata parsing and mask analysis.
 
-#### `pipeline.R` — Image Loading & Metadata Extraction
+#### `Image_Analysis_Pipeline_Plotting.R` — Image Loading, Metadata Extraction, and Mask Quantification
 
-- Reads `.tif` images from `00_test-input/`
-- Parses filenames into a structured metadata table (genotype, condition, brain region, magnification, sample ID)
-- Loads each image into memory via `magick` for downstream use
+1. Reads `.tif` images from Alpine directory
+2. Parses filenames into a structured metadata table (genotype, condition, brain region, magnification, sample ID)
+3. Loads each image into memory via `magick` for downstream use
+4. Reads segmentation masks from `ilastik_output/`
+5. Counts pixels per class (background, brain, deposition)
+6. Calculates **deposition fraction** = `deposition pixels / brain pixels`
+7. Combines metadata and quantification into a single tidy dataframe
 
-**Libraries:** `tidyverse`, `magick`
+**Libraries:** `tidyverse`, `stringr`, `purrr`, `EBImage`, `magick`
 
-#### `Image_Analysis_Pipeline.R` — Mask Quantification
-
-- Reads segmentation masks from `Masked_Images/`
-- Counts pixels per class (background, brain, deposition)
-- Calculates **deposition fraction** = `deposition pixels / brain pixels`
-- Combines metadata and quantification into a single tidy dataframe
-
-**Libraries:** `tidyverse`, `stringr`, `purrr`, `EBImage`
-
-**Key output columns:**
+**Key output metadata columns:**
 
 | Column | Description |
 |---|---|
@@ -114,7 +112,7 @@ Two R scripts handle metadata parsing and mask analysis.
 |---|---|
 | Ilastik mask overlays | Images annotated with background / tissue / deposition labels |
 | Segmentation masks | Grayscale `.tif` masks per image |
-| `combined_data` table | Tidy per-image quantification with metadata |
+| PercentDeposition_summary.csv | Tidy per-image quantification with metadata |
 | Deposition heatmap | % deposition per brain region, visualized across groups |
 | Deposition boxplot | % deposition per brain region, grouped by treatment |
 
@@ -123,11 +121,11 @@ Two R scripts handle metadata parsing and mask analysis.
 ## Directory Structure
 
 ```
-project/
-├── 00_test-input/          # Raw .tif histological images
-├── Masked_Images/          # Ilastik segmentation mask outputs
-├── pipeline.R              # Image loading and metadata extraction
-├── Image_Analysis_Pipeline.R  # Mask quantification and summary
+qCMB-retreat_2026/
+├── ilastik_output/          # Ilastik segmentation mask outputs
+├── Plot_output/          # plots from R script visualizations
+├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
+├── prion_pipeline_presentation.pptx  # qCMB retreat presentation :) 
 └── README.md
 ```
 
@@ -140,7 +138,7 @@ project/
 install.packages(c("tidyverse", "stringr", "purrr"))
 BiocManager::install("EBImage")   # for readImage()
 
-# For pipeline.R image loading:
+# For image loading:
 install.packages("magick")
 ```
 
@@ -151,10 +149,9 @@ install.packages("magick")
 
 ## Getting Started
 
-1. Train an Ilastik classifier on representative images using the three labels above.
-2. Export segmentation masks to `Masked_Images/` using the batch processing module.
-3. Run `pipeline.R` to load images and build the metadata table.
-4. Run `Image_Analysis_Pipeline.R` to quantify deposition and generate the summary dataframe.
+1. Train an Ilastik classifier on representative images using the three labels and methods above.
+2. Export segmentation masks to `ilastik_outputs/` using the batch processing module.
+3. Run `Image_Analysis_Pipeline_Plotting.R` to load images, build the metadata table, quantify deposition and generate the summary dataframe.
 5. Use the output dataframe for downstream visualization (heatmaps, group comparisons).
 
 ---
