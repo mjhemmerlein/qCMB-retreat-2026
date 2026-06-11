@@ -4,6 +4,8 @@ library(tidyverse)
 library(stringr)
 library(purrr)
 library(EBImage)
+library(lmerTest)
+library(emmeans)
 
 files <- list.files(
   "ilastik_output/",
@@ -69,12 +71,13 @@ combined_data %>%
   geom_jitter(width = 0.08, alpha = 0.5, size = 2) +
   facet_wrap(~ tissue, scales = "free_y") +
   theme_bw() +
-  theme(legend.position = "none") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_manual(values = mycolors) +
   labs(
     x = "Treatment Group",
     y = "Percent Deposition\n(Deposition Area / Brain Area)")
+
+#ggsave("Plot_output/BrainRegion.png", width = 8, height = 6, dpi = 300)
 
 combined_data %>%
   ggplot(aes(x = tissue, y = deposition_percent, fill = group_treatment)) +
@@ -89,9 +92,31 @@ combined_data %>%
     x = "Brain Region",
     y = "Percent Deposition\n(Deposition Area / Brain Area)")
 
-
+#ggsave("Plot_output/Genotype.png", width = 8, height = 6, dpi = 300)
 
 #write.csv(combined_data, "PercentDeposition_summary.csv")
 
-# Statisitcs
+# Statistics
+
+Genotype <- lm(
+  deposition_percent ~ group_treatment * tissue,
+  data = combined_data)
+
+anova(Genotype)
+
+emmeans(Genotype, pairwise ~ group_treatment | tissue)
+
+
+# How does genotype impact percent deposition in the brain regions?
+Genotype <- lm(
+  deposition_percent ~ group_treatment * tissue,
+  data = combined_data)
+
+anova(Genotype)
+
+emmeans(Genotype, pairwise ~ tissue | group_treatment)
+
+
+
+
 
