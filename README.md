@@ -41,14 +41,29 @@ Raw .tif Images
 
 ```
 qCMB-retreat_2026/
-├── Plot_output/             # plots from R script visualizations
-      └── BrainRegion.png    # Boxplot faceted by Brain Region
-      └── Genotype.png       # Boxplot faceted by Genotype  
-├── ilastik_output/          # Ilastik segmentation mask outputs
-├── .gitignore               # To ignore the .DS_store and .Rproj files
+├── Plot_output/                         # plots from R script visualizations
+      └── BrainRegion.png                     # Boxplot faceted by Brain Region
+      └── Genotype.png                        # Boxplot faceted by Genotype  
+├── ilastik_output/                     # Ilastik segmentation mask outputs
+      └── Controls_mask                       # Contains the data from wildtype mice
+            └── cerebellum_4x_mask                   # Masked images from cerebellum at 4x magnification
+            └── hippocampus_4x_mask                  # Masked images from hippocampus at 4x magnification
+            └── midbrain_4x_mask                     # Masked images from midbrain at 4x magnification
+            └── septum_4x_mask                       # Masked images from septum at 4x magnification
+      └── GtDeer_mask                         # Contains the data from Deer genotype mice
+            └── cerebellum_4x_mask                   # Masked images from cerebellum at 4x magnification
+            └── hippocampus_4x_mask                  # Masked images from hippocampus at 4x magnification
+            └── midbrain_4x_mask                     # Masked images from midbrain at 4x magnification
+            └── septum_4x_mask                       # Masked images from septum at 4x magnification
+      └── GtElk_mask                          # Contains the data from Elk genotype mice
+            └── cerebellum_4x_mask                   # Masked images from cerebellum at 4x magnification
+            └── hippocampus_4x_mask                  # Masked images from hippocampus at 4x magnification
+            └── midbrain_4x_mask                     # Masked images from midbrain at 4x magnification
+            └── septum_4x_mask                       # Masked images from septum at 4x magnification
+├── .gitignore                          # To ignore the .DS_store and .Rproj files
 ├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
-├── PercentDeposition_summary.csv # Summary of the data output from ilastik, includes deposition fraction data
-└── README.md
+├── PercentDeposition_summary.csv       # Summary of the data output from ilastik, includes deposition fraction data
+└── README.md                           # This RADME file
 ```
 ---
 
