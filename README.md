@@ -41,10 +41,12 @@ Raw .tif Images
 
 ```
 qCMB-retreat_2026/
-├── ilastik_output/          # Ilastik segmentation mask outputs
 ├── Plot_output/          # plots from R script visualizations
+├── ilastik_output/          # Ilastik segmentation mask outputs
+├── .gitignore               # To ignore the .DS_store and .Rproj files
 ├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
-├── prion_pipeline_presentation.pptx  # qCMB retreat presentation :) 
+├── PercentDeposition_summary.csv # Output from ilastik, contains image segmentation data
+├── prion_pipeline_presentation.pptx  # qCMB retreat presentation :)
 └── README.md
 ```
 ---
