@@ -1,5 +1,12 @@
+########################################
+### qCMB 2026 Hackathon ################
+### Team Hacking into the Brainframe ###
+### 06/10/2026 - 06/11/2026 ############
+########################################
 
-# Libraries
+########################################
+### Load libraries #####################
+########################################
 library(tidyverse)
 library(stringr)
 library(purrr)
@@ -7,6 +14,11 @@ library(EBImage)
 library(lmerTest)
 library(emmeans)
 
+########################################
+### Import files #######################
+########################################
+
+# Get list of files from the output of ilastik
 files <- list.files(
   "ilastik_output/",
   full.names = TRUE,
@@ -15,9 +27,15 @@ files <- list.files(
 
 # Function to parse file names
 parse_filename_metadata <- function(filepath) {
+  
+  # extract the name of the file, excluding the path
   fname <- basename(filepath)
+  
+  # Split the metadata from the file name by "_"
+  # Remove everything after and including the last "." in the file name
   parts <- str_split(str_remove(fname, "\\.[^.]+$"), "_")[[1]]
   
+  # Initialize dataframe to hold metadata
   tibble(
     file = fname,
     group = parts[1],
@@ -32,6 +50,8 @@ parse_filename_metadata <- function(filepath) {
 # Function to extract mask features
 extract_mask_features <- function(mask) {
   
+  # Create a dataframe of the masked values calculated in ilastik,
+  # Calculate fraction of deposition
   tibble(
     background = sum(mask == 1, na.rm = TRUE),
     brain      = sum(mask == 2, na.rm = TRUE),
@@ -43,8 +63,10 @@ extract_mask_features <- function(mask) {
 # Function to run
 process_mask_file <- function(filepath) {
   
+  # Import an image
   mask <- readImage(filepath)
   
+  # Run function parse_filename_metadata on the imported image
   meta <- parse_filename_metadata(filepath)
   features <- extract_mask_features(mask)
   
