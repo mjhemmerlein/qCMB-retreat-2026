@@ -1,4 +1,4 @@
-# 2026 qCMB Retreat --- Hacking In
+# 2026 qCMB Retreat --- Hacking into the Brainframe
 
 ## Connecting GitHub and Alpine
 _These instructions were originally compiled by Eric Anderson._
