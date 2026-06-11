@@ -91,19 +91,17 @@ Train a pixel classifier to label three classes in each image, using the followi
 
 ### 2. R — Quantification & Visualization
 
-Two R scripts handle metadata parsing and mask analysis.
-
 #### `Image_Analysis_Pipeline_Plotting.R` — Image Loading, Metadata Extraction, and Mask Quantification
 
 1. Reads `.tif` images from Alpine directory
 2. Parses filenames into a structured metadata table (genotype, condition, brain region, magnification, sample ID)
-3. Loads each image into memory via `magick` for downstream use
+3. Loads each image into memory via `EBImage` for downstream use
 4. Reads segmentation masks from `ilastik_output/`
 5. Counts pixels per class (background, brain, deposition)
 6. Calculates **deposition fraction** = `deposition pixels / brain pixels`
 7. Combines metadata and quantification into a single tidy dataframe
 
-**Libraries:** `tidyverse`, `stringr`, `purrr`, `EBImage`, `magick`
+**Libraries:** `tidyverse`, `stringr`, `purrr`, `EBImage`, `lmertest`, `emmeans`
 
 **Key output metadata columns:**
 
