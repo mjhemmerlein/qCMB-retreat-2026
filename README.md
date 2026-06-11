@@ -45,7 +45,7 @@ qCMB-retreat_2026/
 ├── ilastik_output/          # Ilastik segmentation mask outputs
 ├── .gitignore               # To ignore the .DS_store and .Rproj files
 ├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
-├── PercentDeposition_summary.csv # Output from ilastik, contains image segmentation data
+├── PercentDeposition_summary.csv # Summary of the data output from ilastik, includes deposition fraction data
 ├── prion_pipeline_presentation.pptx  # qCMB retreat presentation :)
 └── README.md
 ```
