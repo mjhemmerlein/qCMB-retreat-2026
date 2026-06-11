@@ -2,7 +2,7 @@
 
 > **qCMB 2026 Hackathon** · Team Hacking into the Brainframe · June 10–11, 2026
 
-*Built at the qCMB 2026 Hackathon by Team Hacking into the Brainframe (Ayda Lewis, Megan Hammerlein, and Owen Bevis) and ChatGPT 5.5.*
+*Built at the qCMB 2026 Hackathon by Team Hacking into the Brainframe (Ayda Lewis, Megan Hemmerlein, and Owen Bevis) and ChatGPT 5.5.*
 
 A reproducible, accessible pipeline for quantifying prion deposition in histological images. Combines the machine learning-based segmentation of **Ilastik** with automated pixel quantification and visualization in **R**. No extensive imaging analysis experience required!
 
