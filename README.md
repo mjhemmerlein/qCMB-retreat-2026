@@ -1,4 +1,4 @@
-# Prion Deposit Analysis Pipeline
+# Prion Deposition Analysis Pipeline
 
 > **qCMB 2026 Hackathon** · Team Hacking into the Brainframe · June 10–11, 2026
 
