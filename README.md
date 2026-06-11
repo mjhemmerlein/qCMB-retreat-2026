@@ -33,7 +33,7 @@ Raw .tif Images
   → area of deposition/area of brain tissue = % deposition
       │
       ▼
-  Percent Deposition per brain region boxplot + Heatmap
+  Percent Deposition per brain region boxplot + statistical analysis
 ```
 ---
 
