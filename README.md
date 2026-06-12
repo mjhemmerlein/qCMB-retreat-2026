@@ -1,4 +1,4 @@
-# Prion Deposit Analysis Pipeline
+# Prion Deposition Analysis Pipeline
 
 > **qCMB 2026 Hackathon** · Team Hacking into the Brainframe · June 10–11, 2026
 
@@ -33,9 +33,38 @@ Raw .tif Images
   → area of deposition/area of brain tissue = % deposition
       │
       ▼
-  Percent Deposition per brain region boxplot + Heatmap
+  Percent Deposition per brain region boxplot + statistical analysis
 ```
+---
 
+## Directory Structure
+
+```
+qCMB-retreat_2026/
+├── Plot_output/                         # plots from R script visualizations
+      └── BrainRegion.png                     # Boxplot faceted by Brain Region
+      └── Genotype.png                        # Boxplot faceted by Genotype  
+├── ilastik_output/                     # Ilastik segmentation mask outputs
+      └── Controls_mask/                       # Contains the data from wildtype mice
+            └── cerebellum_4x_mask/                   # Masked images from cerebellum at 4x magnification
+            └── hippocampus_4x_mask/                  # Masked images from hippocampus at 4x magnification
+            └── midbrain_4x_mask/                     # Masked images from midbrain at 4x magnification
+            └── septum_4x_mask/                       # Masked images from septum at 4x magnification
+      └── GtDeer_mask/                         # Contains the data from Deer genotype mice
+            └── cerebellum_4x_mask/                   # Masked images from cerebellum at 4x magnification
+            └── hippocampus_4x_mask/                  # Masked images from hippocampus at 4x magnification
+            └── midbrain_4x_mask/                     # Masked images from midbrain at 4x magnification
+            └── septum_4x_mask/                       # Masked images from septum at 4x magnification
+      └── GtElk_mask/                          # Contains the data from Elk genotype mice
+            └── cerebellum_4x_mask/                   # Masked images from cerebellum at 4x magnification
+            └── hippocampus_4x_mask/                  # Masked images from hippocampus at 4x magnification
+            └── midbrain_4x_mask/                     # Masked images from midbrain at 4x magnification
+            └── septum_4x_mask/                       # Masked images from septum at 4x magnification
+├── .gitignore                          # To ignore the .DS_store and .Rproj files
+├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
+├── PercentDeposition_summary.csv       # Summary of the data output from ilastik, includes deposition fraction data
+└── README.md                           # This RADME file
+```
 ---
 
 ## File Naming Convention
@@ -48,10 +77,10 @@ Input images must follow this underscore-delimited naming scheme:
 
 | Field | Description | Example |
 |---|---|---|
-| `group` | Experimental group / genotype | `WT`, `KO` |
-| `treatment` | Treatment condition | `ctrl`, `infected` |
-| `tissue` | Brain region | `cortex`, `hippocampus` |
-| `magnification` | Objective used | `10x`, `20x` |
+| `group` | Experimental group / genotype | `WT`, `GtDeer`, `GtElk` |
+| `treatment` | Treatment condition | `control`, `treatment` |
+| `tissue` | Brain region | `cerebellum`, `midbrain`, `hippocampus`, `septum` |
+| `magnification` | Objective used | `4x` |
 | `sample_id` | Unique sample identifier | `M01` |
 | `method` | Downstream method tag | `ilastik` |
 
@@ -78,19 +107,17 @@ Train a pixel classifier to label three classes in each image, using the followi
 
 ### 2. R — Quantification & Visualization
 
-Two R scripts handle metadata parsing and mask analysis.
-
 #### `Image_Analysis_Pipeline_Plotting.R` — Image Loading, Metadata Extraction, and Mask Quantification
 
 1. Reads `.tif` images from Alpine directory
 2. Parses filenames into a structured metadata table (genotype, condition, brain region, magnification, sample ID)
-3. Loads each image into memory via `magick` for downstream use
+3. Loads each image into memory via `EBImage` for downstream use
 4. Reads segmentation masks from `ilastik_output/`
 5. Counts pixels per class (background, brain, deposition)
 6. Calculates **deposition fraction** = `deposition pixels / brain pixels`
 7. Combines metadata and quantification into a single tidy dataframe
 
-**Libraries:** `tidyverse`, `stringr`, `purrr`, `EBImage`, `magick`
+**Libraries:** `tidyverse`, `stringr`, `purrr`, `EBImage`, `lmertest`, `emmeans`
 
 **Key output metadata columns:**
 
@@ -118,28 +145,13 @@ Two R scripts handle metadata parsing and mask analysis.
 
 ---
 
-## Directory Structure
-
-```
-qCMB-retreat_2026/
-├── ilastik_output/          # Ilastik segmentation mask outputs
-├── Plot_output/          # plots from R script visualizations
-├── Image_Analysis_Pipeline_Plotting.R  # Pipeline to go from masked images to plots and summary data
-├── prion_pipeline_presentation.pptx  # qCMB retreat presentation :) 
-└── README.md
-```
-
----
-
 ## Dependencies
 
 ### R Packages
 ```r
-install.packages(c("tidyverse", "stringr", "purrr"))
+install.packages(c("tidyverse", "stringr", "purrr", "lmertest", "emmeans"))
 BiocManager::install("EBImage")   # for readImage()
 
-# For image loading:
-install.packages("magick")
 ```
 
 ### External Tools
